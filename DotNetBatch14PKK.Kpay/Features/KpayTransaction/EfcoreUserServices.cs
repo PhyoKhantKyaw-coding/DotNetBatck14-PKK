@@ -25,6 +25,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
 
         public ResponseModel CreateUser(UserModel user)
         {
+            user.UserId = Guid.NewGuid().ToString();
             _db.users.Add(user);
             var result = _db.SaveChanges();
             string message = result > 0 ? "User created successfully." : "User creation failed.";

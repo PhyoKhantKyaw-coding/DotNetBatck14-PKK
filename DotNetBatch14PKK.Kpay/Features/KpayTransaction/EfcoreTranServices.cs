@@ -80,6 +80,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
                 _db.users.Update(toUser);
                 var transaction = new TranModel
                 {
+                    TransactionId = Guid.NewGuid().ToString(),
                     FromMobileNo = fromMobileNo,
                     ToMobileNo = toMobileNo,
                     Amount = amount.ToString(),

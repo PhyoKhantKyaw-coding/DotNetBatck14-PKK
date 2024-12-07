@@ -92,8 +92,6 @@ public class UserServices : IDapperUserService
         return blog;
     }
 
-
-
     public ResponseModel Deposit(string mobileNo, int depositAmount, string password)
     {
         var user = GetUser(mobileNo);

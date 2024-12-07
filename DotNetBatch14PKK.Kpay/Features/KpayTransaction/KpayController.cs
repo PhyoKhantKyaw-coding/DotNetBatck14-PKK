@@ -12,11 +12,11 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
         public KpayController()
         {
             //_tranServices = new TranServices();
-            //_UserServices = new UserServices();
+            _UserServices = new UserServices();
             //_tranServices = new DapperTranServices();
             //_UserServices = new DapperUserService();
             _tranServices = new EfcoreTranServices();
-            _UserServices = new EfcoreUserService();
+            //_UserServices = new EfcoreUserService();
 
         }
 

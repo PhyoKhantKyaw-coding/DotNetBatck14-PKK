@@ -9,6 +9,7 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
         [Key]
         public string? CategoryId { get; set; }
         public string? CatName { get; set; }
+        public int Catcode { get; set; }
     }
 
     public class ResponseModel

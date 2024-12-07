@@ -20,7 +20,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
 
         }
 
-        [HttpGet]
+        [HttpGet("Users")]
         public IActionResult GetUsers()
         {
             var users = _UserServices.GetUsers();
@@ -33,7 +33,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             if (user == null) return NotFound("No data found.");
             return Ok(user);
         }
-        [HttpPost]
+        [HttpPost("Register")]
         public IActionResult CreateUser([FromBody] UserModel requestModel)
         {
             var model = _UserServices.CreateUser(requestModel);
@@ -41,7 +41,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             return Ok(model);
         }
 
-        [HttpPatch("Deposit")]
+        [HttpPost("Deposit")]
         public IActionResult Deposit(string mobile, int amount, string password)
         {
             var model = _UserServices.Deposit(mobile,amount,password);
@@ -49,7 +49,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             return Ok(model);
         }
 
-        [HttpPatch("withdraw")]
+        [HttpPost("withdraw")]
         public IActionResult withdraw(string mobile, int amount, string password)
         {
             var model = _UserServices.Withdraw(mobile, amount, password);
@@ -57,7 +57,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             return Ok(model);
         }
 
-        [HttpPatch("Transaction")]
+        [HttpPost("Transafer")]
         public IActionResult transaction(string frommobile, string tomobile, int amount,DateTime date, string note, string password)
         {
             var model = _tranServices.Transaction(frommobile, tomobile, amount,date, note, password);

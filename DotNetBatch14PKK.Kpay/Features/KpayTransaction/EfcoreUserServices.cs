@@ -20,7 +20,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
 
         public UserModel GetUser(string mobileNo)
         {
-            return _db.users.AsNoTracking().FirstOrDefault(user => user.MobileNo == mobileNo);
+            return _db.users.AsNoTracking().FirstOrDefault(user => user.MobileNo == mobileNo)!;
         }
 
         public ResponseModel CreateUser(UserModel user)

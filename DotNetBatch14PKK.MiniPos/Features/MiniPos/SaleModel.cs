@@ -10,6 +10,7 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
         public string? SaleId { get; set; }
         public DateTime SaleDate { get; set; }
         public int STotalQty { get; set; } 
-        public int STA { get; set; } 
+        public decimal STA { get; set; }
+        public int VoucherNo { get; set; }
     }
 }

@@ -22,7 +22,7 @@ public class EfcoreCategoryService
 
     public CategoryModel GetCategoryById(string categoryId)
     {
-        return _db.cats.AsNoTracking().FirstOrDefault(cat => cat.CategoryId == categoryId);
+        return _db.cats.AsNoTracking().FirstOrDefault(cat => cat.CategoryId == categoryId)!;
     }
 
     public ResponseModel CreateCategory(CategoryModel category)
@@ -73,17 +73,7 @@ public class EfcoreCategoryService
             };
         }
 
-        var isCategoryInUse = _db.product.Any(prod => prod.CategoryId == categoryId);
-        if (isCategoryInUse)
-        {
-            return new ResponseModel
-            {
-                IsSuccessful = false,
-                Message = "Category cannot be deleted because it is in use."
-            };
-        }
-
-        _db.cats.Remove(category);
+           _db.cats.Remove(category);
         var result = _db.SaveChanges();
 
         return new ResponseModel

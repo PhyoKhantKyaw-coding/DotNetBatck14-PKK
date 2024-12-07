@@ -21,7 +21,7 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
 
         public ProductModel GetProductById(string productId)
         {
-            return _db.product.Include(p => p.CategoryId).AsNoTracking().FirstOrDefault(p => p.ProductId == productId)!;
+            return _db.product.AsNoTracking().FirstOrDefault(p => p.ProductId == productId)!;
         }
 
         public ResponseModel UpdateProduct(string id, ProductModel updatedProduct)
@@ -48,9 +48,9 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
             {
                 existingProduct.Price = updatedProduct.Price;
             }
-            if (!string.IsNullOrEmpty(updatedProduct.CategoryId))
+            if (updatedProduct.CatCode>0)
             {
-                existingProduct.CategoryId = updatedProduct.CategoryId;
+                existingProduct.CatCode = updatedProduct.CatCode;
             }
 
             _db.Entry(existingProduct).State = EntityState.Modified;
@@ -73,13 +73,13 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
                 };
             }
 
-            var categoryExists = _db.cats.Any(c => c.CategoryId == newProduct.CategoryId);
+            var categoryExists = _db.cats.Any(c => c.Catcode == newProduct.CatCode);
             if (!categoryExists)
             {
                 return new ResponseModel
                 {
                     IsSuccessful = false,
-                    Message = "Category not found. Please provide a valid CategoryId."
+                    Message = "Category not found. Please provide a valid Categorycode."
                 };
             }
 

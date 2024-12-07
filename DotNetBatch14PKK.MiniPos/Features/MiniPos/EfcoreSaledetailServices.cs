@@ -24,23 +24,22 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
             return _db.sale.AsNoTracking().FirstOrDefault(s => s.SaleId == saleId)!;
         }
 
-        public List<SaleDetailModel> GetAllSaleDetailsBySaleId(string saleId)
+        public List<SaleDetailModel> GetAllSaleDetailsBySaleId(int vouNO)
         {
             return _db.saledetail
-                .Include(sd => sd.ProductId)
                 .AsNoTracking()
-                .Where(sd => sd.SaleId == saleId)
+                .Where(sd => sd.VoucherNo == vouNO)
                 .ToList();
         }
 
-        public ResponseModel CreateSale(List<string> productIds, List<int> quantities)
+        public ResponseModel CreateSale(List<CreateSalesRequest> saleProducts,int vouNo)
         {
-            if (productIds == null || quantities == null || productIds.Count != quantities.Count || !productIds.Any())
+            if (saleProducts == null || !saleProducts.Any())
             {
                 return new ResponseModel
                 {
                     IsSuccessful = false,
-                    Message = "Product IDs and quantities must be non-empty and of the same length."
+                    Message = "The sale product list must not be empty."
                 };
             }
 
@@ -50,50 +49,57 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
                 SaleId = saleId,
                 SaleDate = DateTime.Now,
                 STotalQty = 0,
-                STA = 0
+                STA = 0,
+                VoucherNo = vouNo,
+
             };
 
-            for (int i = 0; i < productIds.Count; i++)
+            foreach (var saleProduct in saleProducts)
             {
-                var productId = productIds[i];
-                var qty = quantities[i];
+                if (string.IsNullOrWhiteSpace(saleProduct.ProductCode) || saleProduct.Quantity <= 0)
+                {
+                    return new ResponseModel
+                    {
+                        IsSuccessful = false,
+                        Message = "Each item must have a valid ProductCode and a Quantity greater than 0."
+                    };
+                }
 
-                var product = _db.product.FirstOrDefault(p => p.ProductId == productId);
+                var product = _db.product.FirstOrDefault(p => p.ProductCode == Convert.ToInt32( saleProduct.ProductCode));
                 if (product == null)
                 {
                     return new ResponseModel
                     {
                         IsSuccessful = false,
-                        Message = $"Product with ID {productId} not found."
+                        Message = $"Product with 101 {saleProduct.ProductCode} not found."
                     };
                 }
 
-                if (product.Qty < qty)
+                if (product.Qty < saleProduct.Quantity)
                 {
                     return new ResponseModel
                     {
                         IsSuccessful = false,
-                        Message = $"Insufficient stock for Product ID {productId}."
+                        Message = $"Insufficient stock for Product code {saleProduct.ProductCode}."
                     };
                 }
 
-                var totalPrice = product.Price * qty;
-
-                product.Qty -= qty;
+                var totalPrice = product.Price * saleProduct.Quantity;
+                product.Qty -= saleProduct.Quantity;
                 _db.Entry(product).State = EntityState.Modified;
 
                 var saleDetail = new SaleDetailModel
                 {
                     SaleDetailId = Guid.NewGuid().ToString(),
-                    SaleId = saleId,
-                    ProductId = productId,
-                    Qty = qty,
+                    VoucherNo = vouNo,
+                    ProductCode =Convert.ToInt32(saleProduct.ProductCode),
+                    Qty = saleProduct.Quantity,
                     TotalPrice = totalPrice
                 };
 
                 _db.saledetail.Add(saleDetail);
 
-                sale.STotalQty += qty;
+                sale.STotalQty += saleProduct.Quantity;
                 sale.STA += totalPrice;
             }
 

@@ -1,8 +1,9 @@
 ﻿namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
 {
-    public class CreateSaleRequest
+    public class CreateSalesRequest
     {
-        public List<string>? ProductIds { get; set; }
-        public List<int>? Quantities { get; set; }
+        public string? ProductCode { get; set; }
+        public int Quantity { get; set; }
     }
+
 }

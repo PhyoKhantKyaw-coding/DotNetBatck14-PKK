@@ -10,12 +10,12 @@ namespace DotNet_Batch14PKK.MiniPos.Features
         [Key]
         public string? SaleDetailId { get; set; }
         [Required]
-        public string? ProductId { get; set; }
+        public int ProductCode { get; set; }
         [Required]
         public int Qty { get; set; } 
-        public int TotalPrice { get; set; } 
+        public decimal TotalPrice { get; set; } 
         [Required]
-        public string? SaleId { get; set; }
+        public int VoucherNo { get; set; }
 
     }
 }

@@ -19,7 +19,7 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
             _saleDetailService = new EfcoreSaledetailServices();
         }
 
-        [HttpGet]
+        [HttpGet("Category")]
         public IActionResult GetAllCategories()
         {
             var categories = _categoryService.GetAllCategories();
@@ -37,7 +37,7 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
             return Ok(category);
         }
 
-        [HttpPost]
+        [HttpPost("Category")]
         public IActionResult CreateCategory([FromBody] CategoryModel categoryModel)
         {
             if (categoryModel == null)
@@ -49,7 +49,7 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
             return Ok(response.Message);
         }
 
-        [HttpPatch]
+        [HttpPatch("Category")]
         public IActionResult UpdateCategory([FromBody] CategoryModel categoryModel)
         {
             if (categoryModel == null || string.IsNullOrEmpty(categoryModel.CategoryId))
@@ -131,30 +131,41 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
             return Ok(sale);
         }
 
-        [HttpGet("sales/{saleId}/details")]
-        public IActionResult GetAllSaleDetailsBySaleId(string saleId)
+        [HttpGet("saledetails/{vocherNo}")]
+        public IActionResult GetAllSaleDetailsBySaleId(int voucherNo)
         {
-            var saleDetails = _saleDetailService.GetAllSaleDetailsBySaleId(saleId);
+            var saleDetails = _saleDetailService.GetAllSaleDetailsBySaleId(voucherNo);
             if (saleDetails == null || !saleDetails.Any())
                 return NotFound("No sale details found for the specified Sale ID.");
             return Ok(saleDetails);
         }
 
-        [HttpPost("sales/details")]
-        public IActionResult CreateSaleDetail([FromBody] CreateSaleRequest request)
+        [HttpPost("sales/create/{voucherNo}")]
+        public IActionResult CreateSale([FromRoute] int voucherNo, [FromBody] List<CreateSalesRequest> saleProducts)
         {
-            if (request == null || request.ProductIds == null || request.Quantities == null ||
-                request.ProductIds.Count != request.Quantities.Count || !request.ProductIds.Any())
+            if (voucherNo <= 0)
             {
-                return BadRequest("Invalid input. Product IDs and quantities must be non-empty and of the same length.");
+                return BadRequest("Invalid input. Voucher number must be greater than 0.");
             }
 
-            var response = _saleDetailService.CreateSale(request.ProductIds, request.Quantities);
+            if (saleProducts == null || !saleProducts.Any())
+            {
+                return BadRequest("Invalid input. Sale products list must not be empty.");
+            }
+
+            var response = _saleDetailService.CreateSale(saleProducts, voucherNo);
+
             if (!response.IsSuccessful)
+            {
                 return BadRequest(response.Message);
+            }
 
             return Ok(response.Message);
         }
+
+
+
+
 
     }
 }

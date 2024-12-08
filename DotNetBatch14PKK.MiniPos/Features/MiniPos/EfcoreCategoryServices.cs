@@ -73,7 +73,7 @@ public class EfcoreCategoryService
             };
         }
 
-           _db.cats.Remove(category);
+       _db.cats.Remove(category);
         var result = _db.SaveChanges();
 
         return new ResponseModel

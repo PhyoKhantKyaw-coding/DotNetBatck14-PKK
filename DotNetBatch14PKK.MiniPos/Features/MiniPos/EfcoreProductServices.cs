@@ -64,14 +64,6 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
         }
         public ResponseModel CreateProduct(ProductModel newProduct)
         {
-            if (newProduct == null)
-            {
-                return new ResponseModel
-                {
-                    IsSuccessful = false,
-                    Message = "Invalid product data."
-                };
-            }
 
             var categoryExists = _db.cats.Any(c => c.Catcode == newProduct.CatCode);
             if (!categoryExists)

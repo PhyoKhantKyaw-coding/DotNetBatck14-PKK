@@ -18,7 +18,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             string notes,
             string password)
         {
-            #region Check Sender (From User)
+            #region Check From Mobile User)
             var fromUser = _userService.GetUser(fromMobileNo);
             if (fromUser is null)
             {
@@ -38,7 +38,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             }
             #endregion
 
-            #region Check Receiver (To User) and Balance
+            #region Check To Mobile User and Balance
             var toUser = _userService.GetUser(toMobileNo);
             if (toUser is null)
             {
@@ -64,53 +64,41 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
-            using var transaction = connection.BeginTransaction();
 
-            try
+            string updateFromQuery = @"
+            UPDATE [dbo].[tblUser]
+            SET [Balance] = @Balance
+            WHERE [MobileNo] = @MobileNo";
+            connection.Execute(updateFromQuery, new { Balance = fromUser.Balance, MobileNo = fromMobileNo });
+
+
+            string updateToQuery = @"
+            UPDATE [dbo].[tblUser]
+            SET [Balance] = @Balance
+            WHERE [MobileNo] = @MobileNo";
+            connection.Execute(updateToQuery, new { Balance = toUser.Balance, MobileNo = toMobileNo });
+
+
+            string insertTransactionQuery = @"
+            INSERT INTO [dbo].[tblTransaction]
+            ([FromMobileNo], [ToMobileNo], [Amount], [TransactionDate], [Notes])
+            VALUES (@FromMobileNo, @ToMobileNo, @Amount, @TransactionDate, @Notes)";
+            connection.Execute(insertTransactionQuery, new
             {
-                string updateFromQuery = @"
-                    UPDATE [dbo].[tblUser]
-                    SET [Balance] = @Balance
-                    WHERE [MobileNo] = @MobileNo";
-                connection.Execute(updateFromQuery, new { Balance = fromUser.Balance, MobileNo = fromMobileNo }, transaction);
+                FromMobileNo = fromMobileNo,
+                ToMobileNo = toMobileNo,
+                Amount = amount,
+                TransactionDate = transactionDate,
+                Notes = notes
+            });
 
-                string updateToQuery = @"
-                    UPDATE [dbo].[tblUser]
-                    SET [Balance] = @Balance
-                    WHERE [MobileNo] = @MobileNo";
-                connection.Execute(updateToQuery, new { Balance = toUser.Balance, MobileNo = toMobileNo }, transaction);
-
-                string insertTransactionQuery = @"
-                    INSERT INTO [dbo].[tblTransaction]
-                    ([FromMobileNo], [ToMobileNo], [Amount], [TransactionDate], [Notes])
-                    VALUES (@FromMobileNo, @ToMobileNo, @Amount, @TransactionDate, @Notes)";
-                connection.Execute(insertTransactionQuery, new
-                {
-                    FromMobileNo = fromMobileNo,
-                    ToMobileNo = toMobileNo,
-                    Amount = amount,
-                    TransactionDate = transactionDate,
-                    Notes = notes
-                }, transaction);
-
-                transaction.Commit();
-
-                return new TranResponseModel
-                {
-                    IsSuccessful = true,
-                    Message = "Transaction successful."
-                };
-            }
-            catch
+            return new TranResponseModel
             {
-                transaction.Rollback();
-                return new TranResponseModel
-                {
-                    IsSuccessful = false,
-                    Message = "Transaction failed."
-                };
-            }
+                IsSuccessful = true,
+                Message = "Transaction successful."
+            };
         }
+
 
         public List<TranModel> GetTransactionHistory(string mobileNo)
         {

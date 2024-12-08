@@ -73,32 +73,21 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
             toUser.Balance += amount;
 
             #region Update Database using EF Core
-            try
-            {
-                _db.users.Update(fromUser);
+            _db.users.Update(fromUser);
+            _db.users.Update(toUser);
 
-                _db.users.Update(toUser);
-                var transaction = new TranModel
-                {
-                    TransactionId = Guid.NewGuid().ToString(),
-                    FromMobileNo = fromMobileNo,
-                    ToMobileNo = toMobileNo,
-                    Amount = amount.ToString(),
-                    TransactionDate = transactionDate,
-                    Notes = notes
-                };
-                _db.trans.Add(transaction);
-
-                _db.SaveChanges();
-            }
-            catch (Exception ex)
+            var transaction = new TranModel
             {
-                return new TranResponseModel
-                {
-                    IsSuccessful = false,
-                    Message = $"Transaction failed: {ex.Message}"
-                };
-            }
+                TransactionId = Guid.NewGuid().ToString(),
+                FromMobileNo = fromMobileNo,
+                ToMobileNo = toMobileNo,
+                Amount = amount.ToString(),
+                TransactionDate = transactionDate,
+                Notes = notes
+            };
+            _db.trans.Add(transaction);
+
+            _db.SaveChanges();
             #endregion
 
             return new TranResponseModel
@@ -107,6 +96,7 @@ namespace DotNetBatch14PKK.Kpay.Features.KpayTransaction
                 Message = "Transaction successful."
             };
         }
+
 
         #region History
         public List<TranModel> GetTransactionHistory(string mobileNo)

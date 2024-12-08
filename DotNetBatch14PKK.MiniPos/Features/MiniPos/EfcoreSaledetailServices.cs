@@ -34,15 +34,6 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
 
         public ResponseModel CreateSale(List<CreateSalesRequest> saleProducts,int vouNo)
         {
-            if (saleProducts == null || !saleProducts.Any())
-            {
-                return new ResponseModel
-                {
-                    IsSuccessful = false,
-                    Message = "The sale product list must not be empty."
-                };
-            }
-
             var saleId = Guid.NewGuid().ToString();
             var sale = new SaleModel
             {
@@ -56,15 +47,6 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
 
             foreach (var saleProduct in saleProducts)
             {
-                if (string.IsNullOrWhiteSpace(saleProduct.ProductCode) || saleProduct.Quantity <= 0)
-                {
-                    return new ResponseModel
-                    {
-                        IsSuccessful = false,
-                        Message = "Each item must have a valid ProductCode and a Quantity greater than 0."
-                    };
-                }
-
                 var product = _db.product.FirstOrDefault(p => p.ProductCode == Convert.ToInt32( saleProduct.ProductCode));
                 if (product == null)
                 {

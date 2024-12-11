@@ -8,9 +8,9 @@ public class BlogController : ControllerBase
     private readonly IBlogServices _blogService;
     public BlogController()
     {
-       // _blogService = new BlogServices();
+       _blogService = new BlogServices();
        // _blogService = new DapperBlogServices();
-        _blogService = new EfcoreSerives();
+        //_blogService = new EfcoreSerives();
     }
     [HttpGet]
     public IActionResult GetBlogs()

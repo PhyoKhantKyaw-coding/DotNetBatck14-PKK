@@ -95,7 +95,5 @@ namespace DotNetBatch14PKK.MiniPos.Features.MiniPos
                 Message = result > 0 ? "Sale created successfully, and product quantities updated." : "Failed to create sale."
             };
         }
-
-
     }
 }

@@ -58,25 +58,41 @@ namespace DotNet_Batch14PKK.RestApi.Features.Blog
                 Message = "No data found."
             };
 
-            if (String.IsNullOrEmpty(requestModel.BlogTitle))
+            //if (String.IsNullOrEmpty(requestModel.BlogTitle))
+            //{
+            //    requestModel.BlogTitle = blog.BlogTitle;
+            //}
+            //else if (String.IsNullOrEmpty(requestModel.BlogAuthor))
+            //{
+            //    requestModel.BlogAuthor = blog.BlogAuthor;
+            //}
+            //else if (String.IsNullOrEmpty(requestModel.BlogContent))
+            //{
+            //    requestModel.BlogContent = blog.BlogContent;
+            //}
+            string condition = string.Empty;
+            if(requestModel.BlogTitle != null)
             {
-                requestModel.BlogTitle = blog.BlogTitle;
+                condition = " [BlogTitle] = @BlogTitle, ";
             }
-            else if (String.IsNullOrEmpty(requestModel.BlogAuthor))
+            else if (requestModel.BlogTitle != null)
             {
-                requestModel.BlogAuthor = blog.BlogAuthor;
+                condition = " [BlogTitle] = @BlogTitle, ";
             }
-            else if (String.IsNullOrEmpty(requestModel.BlogContent))
+            else if (requestModel.BlogTitle != null)
             {
-                requestModel.BlogContent = blog.BlogContent;
+                condition = " [BlogTitle] = @BlogTitle, ";
+            }
+            else if(condition.Length == 0)
+            {
+                throw new Exception("Invalid parameters.");
             }
 
             using IDbConnection connection = new SqlConnection(_connectionString);
+            condition = condition.Substring(0, condition.Length - 1);
 
             string query = $@"UPDATE [dbo].[TBL_Blog]
-   SET [BlogTitle] = @BlogTitle
-      ,[BlogAuthor] = @BlogAuthor
-      ,[BlogContent] = @BlogContent
+   SET {condition}
  WHERE BlogId = @BlogId";
             var result = connection.Execute(query, requestModel);
 

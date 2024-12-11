@@ -1,9 +1,9 @@
-﻿using DotNetBatch14PKK.RestApi;
+﻿using DotNetBatch14PKK.Share;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Diagnostics;
 
-namespace DotNet_Batch14PKK.RestApi.Features.Blog;
+namespace DotNet_Batch14PKK.Share;
 
 public class BlogServices : IBlogServices
 {

@@ -19,8 +19,6 @@ public class EfcoreGameMoveServices
     public List<GameMoveModel> GetAllGameMoves()
     {
         return _db.gameMove
-            .Include(gm => gm.Game)
-            .Include(gm => gm.Player)
             .AsNoTracking()
             .ToList();
     }
@@ -28,8 +26,6 @@ public class EfcoreGameMoveServices
     public List<GameMoveModel> GetGameMovesByGameId(int gameId)
     {
         return _db.gameMove
-            .Include(gm => gm.Game)
-            .Include(gm => gm.Player)
             .AsNoTracking()
             .Where(gm => gm.GameID == gameId)
             .ToList();

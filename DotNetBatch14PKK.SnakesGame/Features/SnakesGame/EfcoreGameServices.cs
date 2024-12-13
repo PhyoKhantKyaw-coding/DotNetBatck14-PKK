@@ -14,7 +14,6 @@ public class EfcoreGameServices
     public List<GameModel> GetGames()
     {
         return _db.game
-            .Include(g => g.CurrentPlayer)
             .AsNoTracking()
             .ToList();
     }
@@ -22,7 +21,6 @@ public class EfcoreGameServices
     public GameModel? GetGameById(int gameId)
     {
         return _db.game
-            .Include(g => g.CurrentPlayer)
             .AsNoTracking()
             .FirstOrDefault(game => game.GameID == gameId);
     }

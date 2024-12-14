@@ -21,12 +21,15 @@ public class EfcoreGameServices
             .AsNoTracking()
             .ToList();
     }
-    public ResponseModel creategameboard()
+    public ResponseModel CreateGameBoard(GameBoardModel gameBoard)
     {
+        _db.gameBoard.Add(gameBoard);
+        var result = _db.SaveChanges();
+        string message = result > 0 ? "Game board created successfully." : "Failed to create game board.";
         return new ResponseModel
         {
-            IsSuccessful = true,
-            Message = "SUCCESS"
+            IsSuccessful = result > 0,
+            Message = message
         };
     }
     public ResponseModel CreateGame(List<PlayerModel> playersArray)

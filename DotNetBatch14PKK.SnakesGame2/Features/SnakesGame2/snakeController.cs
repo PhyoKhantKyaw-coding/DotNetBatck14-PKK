@@ -15,11 +15,11 @@ namespace DotNetBatch14PKK.SnakesGame2.Features.SnakesGame2
         }
 
         [HttpGet("Create GameBoard")]
-        public IActionResult CreateGameBoard()
+        public IActionResult CreateGameBoard( GameBoardModel gameBoard)
         {
             try
             {
-                var response = _gameServices.creategameboard();
+                var response = _gameServices.CreateGameBoard(gameBoard);
                 if (!response.IsSuccessful) return BadRequest(response);
                 return Ok(response);
             }

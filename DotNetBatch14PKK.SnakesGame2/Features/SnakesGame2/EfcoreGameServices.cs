@@ -63,8 +63,8 @@ public class EfcoreGameServices
             {
                 GameID = game.GameID,
                 PlayerID = player.PlayerID,
-                FromCell = 0,
-                ToCell = 0,
+                FromCell = 1,
+                ToCell = 1,
                 MoveDate = DateTime.Now
             };
             _db.gameMove.Add(initialGameMove);
@@ -162,9 +162,6 @@ public class EfcoreGameServices
         player.CurrentPosition = newPosition;
         _db.Entry(player).State = EntityState.Modified;
         _db.SaveChanges();
-
-
-
         _db.gameMove.Add(gameMove);
         _db.SaveChanges();
 

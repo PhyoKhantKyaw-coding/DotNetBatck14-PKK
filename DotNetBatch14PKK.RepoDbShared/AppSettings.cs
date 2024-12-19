@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNetBatch14PKK.Share;
+namespace DotNetBatch14PKK.RepoDbShared;
 
 internal class AppSettings
 {
@@ -17,5 +17,4 @@ internal class AppSettings
         Password = "sa@123",
         TrustServerCertificate = true,
     };
-
 }

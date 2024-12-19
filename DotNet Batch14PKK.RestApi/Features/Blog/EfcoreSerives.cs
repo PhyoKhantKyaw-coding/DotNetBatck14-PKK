@@ -95,6 +95,11 @@ namespace DotNet_Batch14PKK.RestApi.Features.Blog
             return model;
         }
 
+        public ResponseModel? UpdateBlog(DotNet_Batch14PKK.Share.BlogModel blog)
+        {
+            throw new NotImplementedException();
+        }
+
         public ResponseModel UpsertBlog(BlogModel requestModel)
         {
             var item = _db.Blogs.AsNoTracking().FirstOrDefault(x => x.BlogId == requestModel.BlogId);

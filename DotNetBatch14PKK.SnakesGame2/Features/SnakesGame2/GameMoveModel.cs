@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DotNetBatch14PKK.SnakesGame2.Features.SnakesGame2
 {
-    [Table("tblGameMoves")]
+    [Table("TBL_GameMoves")]
     public class GameMoveModel
     {
         [Key]

@@ -14,8 +14,8 @@ namespace DotNetBatch14PKK.SnakesGame2.Features.SnakesGame2
             _gameServices = new EfcoreGameServices();
         }
 
-        [HttpGet("Create GameBoard")]
-        public IActionResult CreateGameBoard()
+        [HttpPost("Create GameBoard")]
+        public IActionResult CreateGameBoard(GameBoardModel gameBoard)
         {
             try
             {

@@ -87,7 +87,7 @@ namespace DotNetBatch14PKK.RepoDB.Controllers
             try
             {
                 requestModel.BlogId = id;
-                var model = _repoService.update(requestModel);
+                var model = _repoService.Update(requestModel);
                 if (!model.IsSuccessful)
                     return BadRequest(model);
 
@@ -107,7 +107,7 @@ namespace DotNetBatch14PKK.RepoDB.Controllers
         {
             try
             {
-                var model = _repoService.Delete(id);
+                var model = _repoService.DeleteBlog(id);
                 if (!model.IsSuccessful)
                     return BadRequest(model);
 

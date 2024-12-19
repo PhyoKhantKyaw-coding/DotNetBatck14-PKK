@@ -5,7 +5,7 @@ using System.Data;
 
 namespace DotNetBatch14PKK.RepoDbShared;
 
-internal class RepoService
+public class RepoService
 {
     private readonly string _connectionString = AppSettings.connectionBuilder.ConnectionString;
     public readonly IDbConnection _dbConnection;

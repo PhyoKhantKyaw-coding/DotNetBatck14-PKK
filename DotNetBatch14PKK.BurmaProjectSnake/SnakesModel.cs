@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotNetBatch14PKK.snakeConsoleApp
+namespace DotNetBatch14PKK.BurmaProjectSnake
 {
 
     public class Rootobject

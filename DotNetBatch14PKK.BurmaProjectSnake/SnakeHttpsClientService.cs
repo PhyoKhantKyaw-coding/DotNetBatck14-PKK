@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace DotNetBatch14PKK.snakeConsoleApp
+namespace DotNetBatch14PKK.BurmaProjectSnake
 {
     internal class SnakeHttpsClientService
     {

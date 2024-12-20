@@ -10,7 +10,7 @@ namespace DotNetBatch14PKK.RepoConsole
 {
     internal class RepoHttpsClient
     {
-        private readonly string Endpoint = "https://localhost:7232/api/repo";
+        private readonly string Endpoint = "https://localhost:7232/api/blog";
         private readonly HttpClient _client;
 
         public RepoHttpsClient()
@@ -18,12 +18,12 @@ namespace DotNetBatch14PKK.RepoConsole
             _client = new HttpClient();
         }
 
-        public async Task<List<BlogModel>> GetBlogs()
+        public async Task<BlogListResponseModel> GetBlogs()
         {
             HttpResponseMessage response = await _client.GetAsync($"{Endpoint}");
             response.EnsureSuccessStatusCode();
             string json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<BlogModel>>(json)!;
+            return JsonConvert.DeserializeObject<BlogListResponseModel>(json)!;
         }
 
         public async Task<BlogModel> GetBlog(string id)
@@ -64,18 +64,5 @@ namespace DotNetBatch14PKK.RepoConsole
         }
     }
 
-    public class BlogModel
-    {
-        public string? BlogId { get; set; }
-        public string? BlogTitle { get; set; }
-        public string? BlogAuthor { get; set; }
-        public string? BlogContent { get; set; }
-    }
 
-    public class ResponseModel
-    {
-        public bool IsSuccessful { get; set; }
-        public string? Message { get; set; }
-        public object? Data { get; set; }
-    }
 }

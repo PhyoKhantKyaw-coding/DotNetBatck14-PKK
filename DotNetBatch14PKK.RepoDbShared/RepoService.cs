@@ -33,7 +33,7 @@ public class RepoService
             BlogContent = content
         };
 
-        var result = _dbConnection.Insert<BlogModel, int>(blog);
+        var result = _dbConnection.Insert<BlogModel,int>(blog);
         string message = result > 0 ? "Saving successful." : "Saving failed.";
         ResponseModel model = new()
         {

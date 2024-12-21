@@ -15,7 +15,7 @@ namespace DotNetBatch14PKK.MinimalAPi.Features.Blog
             })
             .WithName("GetBlogs")
             .WithOpenApi();
-            app.MapPost("/api/Blog/{id}", (string id) =>
+            app.MapPost("/api/Blog", (string id) =>
             {
                 EfcoreSerives blogService = new EfcoreSerives();
                 var model = blogService.GetBlog(id);

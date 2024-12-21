@@ -1,7 +1,4 @@
-using DotNet_Batch14PKK.Share;
-using DotNetBatch14PKK.MinimalAPi.Features.Blog;
-using Microsoft.AspNetCore.Mvc;
-using BlogModel = DotNet_Batch14PKK.Share.BlogModel;
+using DotNetBatch14PKK.RepoMinimalApi.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,34 +37,9 @@ app.UseHttpsRedirection();
 //})
 //.WithName("GetWeatherForecast")
 //.WithOpenApi();
-//app.MapGet("/api/Blog", () =>
-//{
-//    EfcoreSerives blogService = new EfcoreSerives();
-//    var models = blogService.GetBlogs();
-//    return Results.Ok(models);
-//});
-//app.MapPost("/api/Blog/{id}", (string id) =>
-//{
-//    EfcoreSerives blogService = new EfcoreSerives();
-//    var model = blogService.GetBlog(id);
-//    return Results.Ok(model);
-//});
-//app.MapPatch("/api/Blog/{id}", static (string id,BlogModel blog) =>
-//{
-//    blog.BlogId = id;
-//    EfcoreSerives blogService = new EfcoreSerives();
-//    var model = blogService.UpdateBlog(blog);
-//    return Results.Ok(model);
-//});
-//app.MapDelete("/api/Blog/{id}", static (string id) =>
-//{
-//    EfcoreSerives blogService = new EfcoreSerives();
-//    var model = blogService.DeleteBlog(id);
-//    return Results.Ok(model);
-//});
-app.MapBlogEndPoint();
-app.Run();
 
+app.MapRepoEndPoint();
+app.Run();
 //internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 //{
 //    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);

@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 
 namespace DotNetBatch14PKK.ConsoleApp5
 {
-
-
     internal class BlogRefitClientServices
     {
         private readonly IBlogApi _blogApi;

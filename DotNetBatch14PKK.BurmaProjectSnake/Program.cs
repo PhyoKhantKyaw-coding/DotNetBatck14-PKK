@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-<<<<<<< HEAD
 using DotNetBatch14PKK.BurmaProjectSnake;
 SnakeHttpsClientService httpsClientService = new SnakeHttpsClientService();
 SnakeRefitClientServices refitClientService = new SnakeRefitClientServices();
@@ -38,7 +37,5 @@ var data3 = await restSharpClientService.GetSnake(3);
 Console.WriteLine(data3.MMName);
 
 Console.ReadLine();
-=======
 Console.WriteLine("Hello, World!");
 
->>>>>>> 16865145f631abc70d2ab970f01f3dfd66163d08

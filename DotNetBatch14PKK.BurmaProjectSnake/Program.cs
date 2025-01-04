@@ -4,7 +4,7 @@ using DotNetBatch14PKK.BurmaProjectSnake;
 SnakeHttpsClientService httpsClientService = new SnakeHttpsClientService();
 SnakeRefitClientServices refitClientService = new SnakeRefitClientServices();
 SnakeRestSharpClientService restSharpClientService = new SnakeRestSharpClientService();
-
+ 
 var datalist= new List<Rootobject>();
     datalist = await httpsClientService.GetSnakes();
 foreach (Rootobject data in datalist)

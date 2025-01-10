@@ -8,10 +8,10 @@ public static class RestaurantEndPoint
 { 
     public static IEndpointRouteBuilder MapRestaurantEndPoint(this IEndpointRouteBuilder app)
     {
+        MiniRestaurantService service = new MiniRestaurantService();
         
         app.MapPost("/api/Restaurant/CreateMenuItem", (MenuItem requestModel) =>
         {
-            MiniRestaurantService service = new MiniRestaurantService();
             var result = service.CreateMenuItem(requestModel);
             return Results.Ok(result);
         })
@@ -19,7 +19,6 @@ public static class RestaurantEndPoint
         .WithOpenApi();
         app.MapGet("/api/Restaurant/GetMenuItems", () =>
         {
-            MiniRestaurantService service = new MiniRestaurantService();
             var result = service.GetMenuItems();
             return Results.Ok(result);
         })
@@ -27,7 +26,6 @@ public static class RestaurantEndPoint
         .WithOpenApi();
         app.MapGet("/api/Restaurant/GetMenuItem", (int id) =>
         {
-            MiniRestaurantService service = new MiniRestaurantService();
             var result = service.GetMenuItem(id);
             return Results.Ok(result);
         })
@@ -35,7 +33,6 @@ public static class RestaurantEndPoint
         .WithOpenApi();
         app.MapGet("/api/Restaurant/GetOrders", () =>
         {
-            MiniRestaurantService service = new MiniRestaurantService();
             var result = service.GetOrders();
             return Results.Ok(result);
         })
@@ -43,7 +40,6 @@ public static class RestaurantEndPoint
         .WithOpenApi();
         app.MapGet("/api/Restaurant/GetOrder", (int id) =>
         {
-            MiniRestaurantService service = new MiniRestaurantService();
             var result = service.GetOrder(id);
             return Results.Ok(result);
         })
@@ -51,15 +47,13 @@ public static class RestaurantEndPoint
         .WithOpenApi();
         app.MapPost("/api/Restaurant/CreateOrder", (int OrderCode, List<Itemlist> items) =>
         {
-            MiniRestaurantService service = new MiniRestaurantService();
             var result = service.CreateOrder(OrderCode, items);
             return Results.Ok(result);
         })
         .WithName("CreateOrder")
         .WithOpenApi();
         app.MapGet("/api/Restaurant/GetOrderItems", (int OrderCode) =>
-        {
-            MiniRestaurantService service = new MiniRestaurantService();
+        { 
             var result = service.GetOrderItems(OrderCode);
             return Results.Ok(result);
         })

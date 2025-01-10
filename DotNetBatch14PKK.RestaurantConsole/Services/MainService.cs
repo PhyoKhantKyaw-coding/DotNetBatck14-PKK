@@ -147,7 +147,7 @@ namespace DotNetBatch14PKK.RestaurantConsole.Services
                 {
                     MenuItem menuItem = await _miniRestaurantService.GetMenuItem(item.MenuItemCode);
                     Console.WriteLine("{0,-10} {1,-20} {2,10:C2} {3,10}", menuItem.MenuItemCode, menuItem.Name, menuItem.Price, item.Quantity,menuItem.Price*item.Quantity);
-                    total =+ menuItem.Price * item.Quantity;
+                    total += menuItem.Price * item.Quantity;
                 }
                 Console.WriteLine("Total Amount: {0:C2}",total);
                 var response = await _miniRestaurantService.CreateOrder(orderCode, items);

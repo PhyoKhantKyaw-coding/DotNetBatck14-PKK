@@ -1,0 +1,97 @@
+﻿@model List<BlogModel>
+@{
+	ViewData["Title"] = "Blog List";
+	int no = 0;
+}
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Actions</th>
+			<th>No.</th>
+			<th>Title</th>
+			<th>Content</th>
+			<th>Author</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var blog in Model)
+		{
+			<tr>
+				<td>
+					<a href="/Blog/Edit/@blog.BlogId">Edit</a>
+					<form action="/Blog/Delete/@blog.BlogId">
+						<button type="button">Delete</button>
+					</form>
+				</td>
+				<td>@(++no)</td>
+				<td>@blog.BlogTitle</td>
+				<td>@blog.BlogContent</td>
+				<td>@blog.BlogAuthor</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.8/dist/notiflix-aio-3.2.8.min.js"></script>
+@section scripts{
+	<script>
+		$(document).ready(function(){
+			$('button').click(function(){
+				// let result = confirm('Are you sure want to delete?');
+				// if(!result){
+				// 	return;
+				// }
+				// $(this).parent().submit();
+				confirmMessage('Are you sure want to delete?', function(isConfirmed){
+					if(!isConfirmed){
+						return;
+					}
+					$(this).parent().submit();
+				});
+			});
+		});
+		function successMessage(message) {
+			//sweetalert test
+			Swal.fire({
+				title: 'Success',
+				text: message,
+				icon: 'success',
+				confirmButtonText: 'Cool'
+			})
+
+			//Notiflix test
+			// Notiflix.Notify.success(message);
+			// Notiflix.Report.success(
+			// 	'Success',
+			// 	message,
+			// 	'Okay',
+			// );
+		}
+		function confirmMessage(message, callback) {
+			Swal.fire({
+				title: "Are you sure?",
+				text: "You won't be able to revert this!",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Yes"
+			  }).then((result) => {
+				callback(result.isConfirmed);
+			  });
+
+			// Notiflix.Confirm.show(
+			// 	'Notiflix Confirm',
+			// 	'Do you agree with me?',
+			// 	'Yes',
+			// 	'No',
+			// 	function okCb() {
+			// 		callback(true);
+			// 	},
+			// 	function cancelCb() {
+			// 		callback(false);
+			// 	},
+			// );
+		}
+	</script>
+}

@@ -1,19 +1,20 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNet_Batch14PKK.Share;
+namespace DotNet_Batch14PKK.BlogShare;
 
 public class EfcoreSerives : IBlogServices
 {
     private readonly AppDbContent _db;
 
-    public EfcoreSerives()
+    public EfcoreSerives(AppDbContent db)
     {
-        _db = new AppDbContent();
+        _db = db;
     }
 
     public ResponseModel CreateBlog(BlogModel requestModel)
     {
+        requestModel.BlogId = Guid.NewGuid().ToString();
         _db.Blogs.Add(requestModel);
         var result = _db.SaveChanges();
         string message = result > 0 ? "Saving successful." : "Saving failed.";
@@ -74,15 +75,15 @@ public class EfcoreSerives : IBlogServices
 
         if (!String.IsNullOrEmpty(requestModel.BlogTitle))
         {
-            item.BlogTitle= requestModel.BlogTitle ;
+            item.BlogTitle =requestModel.BlogTitle ;
         }
         if (!String.IsNullOrEmpty(requestModel.BlogAuthor))
         {
-            item.BlogAuthor = requestModel.BlogAuthor;
+            item.BlogAuthor= requestModel.BlogAuthor;
         }
         if (!String.IsNullOrEmpty(requestModel.BlogContent))
         {
-            item.BlogContent = requestModel.BlogContent;
+            item.BlogContent =requestModel.BlogContent;
         }
         _db.Entry(item).State = EntityState.Modified;
         var result = _db.SaveChanges();

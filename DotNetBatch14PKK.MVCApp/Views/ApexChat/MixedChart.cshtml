@@ -1,0 +1,60 @@
+﻿@model MixedChartModel
+@using Newtonsoft.Json;
+
+@{
+    int[] _series1 = Model.Series1;
+    int[] _series2 = Model.Series2;
+    string[] _labels = Model.Labels;
+}
+
+<div id="mixedChart"></div>
+
+@section scripts {
+    <script>
+        const _series1 = @(JsonConvert.SerializeObject(_series1));
+        const _series2 = @(JsonConvert.SerializeObject(_series2));
+        const _labels = @Html.Raw(JsonConvert.SerializeObject(_labels));
+
+        var options = {
+            series: [{
+                name: 'Series 1',
+                type: 'column',
+                data: _series1
+            }, {
+                name: 'Series 2',
+                type: 'line',
+                data: _series2
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+                stacked: false
+            },
+            stroke: {
+                width: [0, 4]
+            },
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [1]
+            },
+            labels: _labels,
+            xaxis: {
+                type: 'category'
+            },
+            yaxis: [{
+                title: {
+                    text: 'Series 1',
+                },
+            }, {
+                opposite: true,
+                title: {
+                    text: 'Series 2'
+                }
+            }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#mixedChart"), options);
+        chart.render();
+    </script>
+}
+

@@ -1,0 +1,22 @@
+﻿@model ScatterHighChartModel
+@using Newtonsoft.Json;
+
+<div id="scatterChartContainer"></div>
+
+@section scripts {
+    <script>
+        Highcharts.chart('scatterChartContainer', {
+            chart: {
+                type: 'scatter'
+            },
+            title: {
+                text: 'Scatter Chart Example'
+            },
+            series: [{
+                name: 'Data Points',
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.Data))
+            }]
+        });
+    </script>
+}
+

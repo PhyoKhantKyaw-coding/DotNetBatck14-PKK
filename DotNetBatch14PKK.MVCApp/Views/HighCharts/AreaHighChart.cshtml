@@ -1,0 +1,25 @@
+﻿@model AreaHighChartModel
+@using Newtonsoft.Json;
+
+<div id="areaChartContainer"></div>
+
+@section scripts {
+    <script>
+        Highcharts.chart('areaChartContainer', {
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: 'Area Chart Example'
+            },
+            xAxis: {
+                categories: @Html.Raw(JsonConvert.SerializeObject(Model.Categories))
+            },
+            series: [{
+                name: 'Earnings',
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.Data))
+            }]
+        });
+    </script>
+}
+

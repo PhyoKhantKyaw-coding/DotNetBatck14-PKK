@@ -1,0 +1,137 @@
+﻿
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th></th>
+			<th>No.</th>
+			<th>Title</th>
+			<th>Author</th>
+			<th>Content</th>
+		</tr>
+	</thead>
+	<tbody id="tbDataTable">
+	</tbody>
+</table>
+
+
+@section scripts {
+	<script>
+		$(document).ready(function(){
+			$.ajax({
+				url: '/BlogAjax/GetBlogs',
+				type: 'GET',
+				success: function(data){
+					//console.log({data});
+					let count = 0;
+
+					let rows = "";
+					for(let i = 0; i < data.length; i++){
+						let item = data[i];
+						let row = `
+							<tr>
+								<td>
+									<a class="btn btn-outline-warning" href="/BlogAjax/Edit/${item.BlogId}">Edit</a>
+									<button class="btn btn-outline-danger btn-delete" type="button" data-id="${item.BlogId}">Delete</button>
+								</td>
+								<td>${++count}</td>
+								<td>${item.BlogTitle}</td>
+								<td>${item.BlogAuthor}</td>
+								<td>${item.BlogContent}</td>
+							</tr>
+						`;
+						rows += row;
+					}
+					$('#tbDataTable').html(rows);
+					bindDeleteButton();
+				},
+				error: function (ex) {
+				var r = jQuery.parseJSON(response.responseText);
+				alert("Message: " + r.Message);
+				alert("StackTrace: " + r.StackTrace);
+				alert("ExceptionType: " + r.ExceptionType);
+			}
+			});
+		});
+
+		function bindDeleteButton(){
+			$('.btn-delete').click(function(){
+				// let result = confirm('Are you sure want to delete?');
+				// if(!result){
+				// 	return;
+				// }
+				let blogId = $(this).data('id');
+				confirmMessage('Are you sure want to delete?', function(isConfirmed){
+					if(!isConfirmed){
+						return;
+					}					
+					console.log({blogId});
+					var reqModel = {
+						BlogId: blogId
+					}
+					$.ajax({
+						url: '/BlogAjax/Delete',
+						type: 'POST',
+						data: { requestModel: reqModel },
+						success: function(data){
+							if(!data.IsSuccess){
+								successMessage(data.Message);
+								//alert(data.Message);
+								return;
+							}
+							successMessage(data.Message);
+							//alert(data.Message);
+							//location.href = '/BlogAjax';
+						},
+						error: function(ex){
+							console.log({ex});
+						}
+					});
+
+				});				
+			});
+		}
+		function successMessage(message) {
+			//sweetalert test
+			Swal.fire({
+				title: 'Success',
+				text: message,
+				icon: 'success',
+				confirmButtonText: 'Cool'
+			})
+
+			//Notiflix test
+			// Notiflix.Notify.success(message);
+			// Notiflix.Report.success(
+			// 	'Success',
+			// 	message,
+			// 	'Okay',
+			// );
+		}
+		function confirmMessage(message, callback) {
+			Swal.fire({
+				title: "Are you sure?",
+				text: "You won't be able to revert this!",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Yes"
+			  }).then((result) => {
+				callback(result.isConfirmed);
+			  });
+
+			// Notiflix.Confirm.show(
+			// 	'Notiflix Confirm',
+			// 	'Do you agree with me?',
+			// 	'Yes',
+			// 	'No',
+			// 	function okCb() {
+			// 		callback(true);
+			// 	},
+			// 	function cancelCb() {
+			// 		callback(false);
+			// 	},
+			// );
+		}
+	</script>
+}

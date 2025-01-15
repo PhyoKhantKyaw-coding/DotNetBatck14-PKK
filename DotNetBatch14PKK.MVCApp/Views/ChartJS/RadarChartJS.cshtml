@@ -1,0 +1,43 @@
+﻿@model RadarChartJSModel
+@using Newtonsoft.Json;
+
+@{
+    int[] _data = Model.Data;
+    string[] _labels = Model.Labels;
+}
+
+<div>
+    <canvas id="radarChart"></canvas>
+</div>
+
+@section scripts {
+    <script>
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        const radarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: @Html.Raw(JsonConvert.SerializeObject(_labels)),
+                datasets: [{
+                    label: 'Radar Chart Example',
+                    data: @Html.Raw(JsonConvert.SerializeObject(_data)),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    </script>
+}
+

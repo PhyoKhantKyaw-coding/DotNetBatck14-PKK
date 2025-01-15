@@ -1,0 +1,41 @@
+﻿@model FunnelChartModel
+@using Newtonsoft.Json;
+
+@{
+    int[] _series = Model.Series;
+    string[] _labels = Model.Labels;
+}
+
+<div id="funnelChart"></div>
+
+@section scripts {
+    <script>
+        const _series = @(JsonConvert.SerializeObject(_series));
+        const _labels = @Html.Raw(JsonConvert.SerializeObject(_labels));
+
+        var options = {
+            series: _series,
+            chart: {
+                type: 'funnel',
+                height: 350
+            },
+            labels: _labels,
+            plotOptions: {
+                funnel: {
+                    width: '80%',
+                    dynamicHeight: true
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val + " items"
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#funnelChart"), options);
+        chart.render();
+    </script>
+}

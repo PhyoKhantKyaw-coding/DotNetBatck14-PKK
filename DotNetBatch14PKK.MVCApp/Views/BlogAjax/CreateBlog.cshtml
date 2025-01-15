@@ -1,0 +1,47 @@
+﻿<div class="mb-3">
+	<label for="txtTitle" class="form-label">Blog Title</label>
+	<input type="text" class="form-control" name="BlogTitle">
+</div>
+<div class="mb-3">
+	<label for="txtAuthor" class="form-label">Author</label>
+	<input type="text" class="form-control" name="BlogAuthor">
+</div>
+<div class="mb-3">
+	<label for="txtContent" class="form-label">Content</label>
+	<input type="text" class="form-control" name="BlogContent">
+</div>
+<button type="button" class="btn btn-primary">Save</button>	
+@section script{
+	<script>
+		$(document).ready(function(){
+			$('button').click(function(){
+				let blogTitle = $('[name="BlogTitle"]').val();
+				let blogAuthor = $('[name="BlogAuthor"]').val();
+				let blogContent = $('[name="BlogContent"]').val();
+				let reqModel = {
+					BlogTitle: blogTitle,
+					BlogAuthor: blogAuthor,
+					BlogContent: blogContent
+				}
+				$.ajax({
+					url: '/BlogAjax/Save',
+					type: 'POST',
+					data: { requestModel: reqModel },
+					success: function(data){
+						if(!data.IsSuccess){
+							// alert(data.Message);
+							successMessage('Saving failed');
+							return;
+						}
+						// alert(data.Message);
+						successMessage('Saving success');
+						location.href = '/BlogAjax';
+					},
+					error: function(ex){
+						console.log({ex});
+					}
+				});
+			});
+		});
+	</script>
+}

@@ -1,0 +1,38 @@
+﻿@model LineChartJSModel
+@using Newtonsoft.Json;
+
+@{
+    int[] _data = Model.Data;
+    string[] _labels = Model.Labels;
+}
+
+<div>
+    <canvas id="lineChart"></canvas>
+</div>
+
+@section scripts {
+    <script>
+        const ctx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(JsonConvert.SerializeObject(_labels)),
+                datasets: [{
+                    label: 'Line Chart Example',
+                    data: @Html.Raw(JsonConvert.SerializeObject(_data)),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
+

@@ -20,70 +20,53 @@ namespace DotNetBatch14PKK.LoanTrackerDomain
             if (loan == null)
                 throw new Exception("Loan not found.");
 
-            var payments = _dbContext.Payment.Where(x => x.LoanId == loanId).ToList();
-            var groupedPayments = payments
-                .GroupBy(p => p.PaymentDate.Year)
-                .Select(g => new
-                {
-                    Year = g.Key,
-                    TotalPayment = g.Sum(p => p.AmountPaid),
-                    TotalLateFees = g.Sum(p => p.LateFee)
-                }).ToList();
-
+            int year = loan.LoanTerm;
             decimal remainingBalance = loan.LoanAmount;
-
             var yearlySchedule = new List<YearlyPaymentScheduleModel>();
-            foreach (var group in groupedPayments)
+            for (int i = 0; i < year; i++)
             {
+               var date = loan.StartDate.AddYears(i);
                 decimal interest = remainingBalance * (loan.InterestRate / 100);
-                decimal principal = group.TotalPayment - interest;
-                remainingBalance -= group.TotalPayment;
+                decimal principal = loan.MonthlyPayment - interest;
+                decimal totalPayment = principal+interest;
+                remainingBalance = remainingBalance - principal;
 
                 yearlySchedule.Add(new YearlyPaymentScheduleModel
                 {
-                    Year = group.Year,
+                    Year = date.Year,
                     Principal = principal,
                     Interest = interest,
-                    TotalPayment = group.TotalPayment,
-                    RemainingBalance =remainingBalance
+                    TotalPayment = totalPayment,
+                    RemainingBalance = remainingBalance
                 });
-            }
 
+            }     
             return yearlySchedule;
         }
 
-        public List<MonthlyPaymentScheduleModel> GetMonthlyPaymentSchedule(string loanId, int year)
+        public List<MonthlyPaymentScheduleModel> GetMonthlyPaymentSchedule(string loanId)
         {
-            var loan = _dbContext.LoanDetails.FirstOrDefault(x => x.Id == loanId);
+            var loan = _dbContext.LoanDetails.FirstOrDefault(x => x.Id == loanId );
             if (loan == null)
                 throw new Exception("Loan not found.");
-
-            var payments = _dbContext.Payment
-                .Where(x => x.LoanId == loanId && x.PaymentDate.Year == year)
-                .ToList();
-
             decimal remainingBalance = loan.LoanAmount;
             var monthlySchedule = new List<MonthlyPaymentScheduleModel>();
-
-            for (int i = 1; i <= 12; i++)
+            for (int i = 0; i < loan.LoanTerm*12; i++)
             {
-                var monthlyPayments = payments.Where(x => x.PaymentDate.Month == i).ToList();
-                decimal totalPayment = monthlyPayments.Sum(x => x.AmountPaid);
-                decimal totalLateFees = monthlyPayments.Sum(x => x.LateFee);
-                decimal interest = remainingBalance * (loan.InterestRate / 100) / 12;
-                decimal principal = totalPayment - interest;
-                remainingBalance -= totalPayment;
-
+                var date = loan.StartDate.AddMonths(i);
+                decimal interest = remainingBalance * (loan.InterestRate / 100)/12;
+                decimal principal = loan.MonthlyPayment - interest;
+                decimal totalPayment = principal + interest;
+                remainingBalance = remainingBalance - principal;
                 monthlySchedule.Add(new MonthlyPaymentScheduleModel
                 {
-                    Month = i,
-                    Principal = Math.Round(principal, 2),
-                    Interest = Math.Round(interest, 2),
-                    TotalPayment = Math.Round(totalPayment, 2),
-                    RemainingBalance = Math.Round(remainingBalance, 2)
+                    Month = date.Month,
+                    Principal = principal,
+                    Interest = interest,
+                    TotalPayment = totalPayment,
+                    RemainingBalance = remainingBalance
                 });
             }
-
             return monthlySchedule;
         }
     }

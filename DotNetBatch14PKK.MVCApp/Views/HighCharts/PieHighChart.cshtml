@@ -1,0 +1,21 @@
+﻿@model PieHighChartModel
+@using Newtonsoft.Json;
+
+<div id="pieChartContainer"></div>
+
+@section scripts {
+    <script>
+        Highcharts.chart('pieChartContainer', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Pie Chart Example'
+            },
+            series: [{
+                name: 'Fruits',
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.Data.Zip(Model.Categories, (value, category) => new { name = category, y = value })))
+            }]
+        });
+    </script>
+}

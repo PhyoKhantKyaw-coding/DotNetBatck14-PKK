@@ -1,0 +1,25 @@
+﻿@model DotNetBatch14PKK.MVCApp.Models.ColumnHighChartModel
+@using Newtonsoft.Json;
+
+<div id="columnChartContainer"></div>
+
+@section scripts {
+    <script>
+        Highcharts.chart('columnChartContainer', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Column Chart Example'
+            },
+            xAxis: {
+                categories: @Html.Raw(JsonConvert.SerializeObject(Model.Categories))
+            },
+            series: [{
+                name: 'Sales',
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.Data))
+            }]
+        });
+    </script>
+}
+

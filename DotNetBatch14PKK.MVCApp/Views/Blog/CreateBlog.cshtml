@@ -1,0 +1,25 @@
+﻿<form action="/Blog/Save" method="post">
+	<div class="mb-3">
+		<label for="txtTitle" class="form-label">Blog Title</label>
+		<input type="text" class="form-control" name="BlogTitle">
+	</div>
+	<div class="mb-3">
+		<label for="txtAuthor" class="form-label">Author</label>
+		<input type="text" class="form-control" name="BlogAuthor">
+	</div>
+	<div class="mb-3">
+		<label for="txtContent" class="form-label">Content</label>
+		<input type="text" class="form-control" name="BlogContent">
+	</div>
+	<button type="button" class="btn btn-primary">Save</button>	
+</form>
+@section scripts {
+	<script>
+		$(document).ready(function(){
+			$('button').click(function(){
+				$(this).parent().submit();
+				successMessage('Saving success');				
+			});
+		});
+	</script>
+}

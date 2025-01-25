@@ -5,8 +5,6 @@ namespace DotNetBatch14PKK.MVCApp.Controllers;
 
 public class CanvasJSController : Controller
 {
-
-    public IActionResult PieCanvasJS()
     {
         var model = new PieCanvasJsModel
         {
@@ -16,7 +14,6 @@ public class CanvasJSController : Controller
         return View(model);
     }
 
-    public IActionResult ColumnCanvasJS()
     {
         var model = new ColumnCanvasJsModel
         {
@@ -26,7 +23,6 @@ public class CanvasJSController : Controller
         return View(model);
     }
 
-    public IActionResult LineCanvasJS()
     {
         var model = new LineCanvasJsModel
         {
@@ -36,7 +32,6 @@ public class CanvasJSController : Controller
         return View(model);
     }
 
-    public IActionResult AreaCanvasJS()
     {
         var model = new AreaCanvasJsModel
         {
@@ -46,7 +41,6 @@ public class CanvasJSController : Controller
         return View(model);
     }
 
-    public IActionResult ScatterCanvasJS()
     {
         var model = new ScatterCanvasJsModel
         {

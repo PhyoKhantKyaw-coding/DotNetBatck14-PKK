@@ -5,7 +5,6 @@ namespace DotNetBatch14PKK.MVCApp.Controllers;
 
 public class HighChartsController : Controller
 {
-    public IActionResult PieHighChart()
     {
         var model = new PieHighChartModel
         {
@@ -15,7 +14,6 @@ public class HighChartsController : Controller
         return View(model);
     }
 
-    public IActionResult ColumnHighChart()
     {
         var model = new ColumnHighChartModel
         {
@@ -25,7 +23,6 @@ public class HighChartsController : Controller
         return View(model);
     }
 
-    public IActionResult LineHighChart()
     {
         var model = new LineHighChartModel
         {
@@ -35,7 +32,6 @@ public class HighChartsController : Controller
         return View(model);
     }
 
-    public IActionResult AreaHighChart()
     {
         var model = new AreaHighChartModel
         {
@@ -45,7 +41,6 @@ public class HighChartsController : Controller
         return View(model);
     }
 
-    public IActionResult ScatterHighChart()
     {
         var model = new ScatterHighChartModel
         {

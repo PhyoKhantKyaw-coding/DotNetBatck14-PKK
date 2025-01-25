@@ -5,7 +5,6 @@ namespace DotNetBatch14PKK.MVCApp.Controllers;
 
 public class ChartJSController : Controller
 {
-    public IActionResult LineChartJS()
     {
         LineChartJSModel model = new LineChartJSModel
         {
@@ -15,7 +14,6 @@ public class ChartJSController : Controller
         return View(model);
     }
 
-    public IActionResult BarChartJS()
     {
         BarChartJSModel model = new BarChartJSModel
         {
@@ -25,7 +23,6 @@ public class ChartJSController : Controller
         return View(model);
     }
 
-    public IActionResult PieChartJS()
     {
         PieChartJSModel model = new PieChartJSModel
         {
@@ -35,7 +32,6 @@ public class ChartJSController : Controller
         return View(model);
     }
 
-    public IActionResult RadarChartJS()
     {
         RadarChartJSModel model = new RadarChartJSModel
         {
@@ -45,7 +41,6 @@ public class ChartJSController : Controller
         return View(model);
     }
 
-    public IActionResult PolarChartJS()
     {
         PolarAreaChartJSModel model = new PolarAreaChartJSModel
         {

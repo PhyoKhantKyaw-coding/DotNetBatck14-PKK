@@ -40,7 +40,7 @@ namespace DotNetBatch14PKK.CustomLogin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Logout()
+        public IActionResult Logout() 
         {
             // Clear the session
             HttpContext.Session.Clear();

@@ -13,7 +13,7 @@ namespace DotNetBatch14PKK.CustomLogin.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index() 
         {
             // Check if the user is authenticated by verifying the session
             var email = HttpContext.Session.GetString("email");

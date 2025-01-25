@@ -18,7 +18,7 @@ namespace DotNetBatch14PKK.CustomLogin.Controllers
 
             // Hardcoded user credentials for demonstration
             if (user.Email == "slh@gmail.com" &&
-                password == "192193cce00ee219a27de7a7fd4ee5d53f4cc93dd2a1120eab528b2c32b08228")
+                password == "e2632eb61f4d9e6e8c223429bdf6ec4aa14cd67c3fb16c5a50ed413f95973d67")
             {
                 // Store the user's email in the session
                 HttpContext.Session.SetString("email", user.Email);
@@ -49,7 +49,7 @@ namespace DotNetBatch14PKK.CustomLogin.Controllers
             Response.Cookies.Delete("email");
 
             // Redirect to the login page
-            return RedirectToAction("SIndex", "SignIn");
+            return RedirectToAction("Index", "SignIn");
         }
     }
 }

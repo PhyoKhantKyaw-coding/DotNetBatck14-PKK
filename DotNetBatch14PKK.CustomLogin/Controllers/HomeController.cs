@@ -20,7 +20,7 @@ namespace DotNetBatch14PKK.CustomLogin.Controllers
             if (string.IsNullOrEmpty(email))
             {
                 // If not authenticated, redirect to the login page
-                return RedirectToAction("SIndex", "SignIn");
+                return RedirectToAction("Index", "SignIn");
             }
 
             // If authenticated, display the home page

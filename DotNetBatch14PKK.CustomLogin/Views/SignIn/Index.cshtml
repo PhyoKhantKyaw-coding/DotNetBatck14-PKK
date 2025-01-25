@@ -1,0 +1,26 @@
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<h2>Sign In</h2>
+
+<form asp-action="Index" method="post">
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <button type="submit">Sign In</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        Invalid email or password.
+    </div>
+}

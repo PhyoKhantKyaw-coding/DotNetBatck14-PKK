@@ -96,6 +96,12 @@ namespace DotNetBatch14PKK.MVCApp.Models
         public double[][] Data { get; set; }
     }
 
+    public class HeatmapHighChartModel
+    {
+        public string[] Categories { get; set; }
+        public double[][] Data { get; set; }
+    }
+
     //CanvasJs
     public class PieCanvasJsModel
     {
@@ -120,5 +126,17 @@ namespace DotNetBatch14PKK.MVCApp.Models
     public class ScatterCanvasJsModel
     {
         public double[][] Data { get; set; }
+    }
+
+    public class StepLineChartDataPoint
+    {
+        public DateTime X { get; set; }
+        public double Y { get; set; }
+    }
+
+    public class MultiSeriesStepLineChartModel
+    {
+        public List<StepLineChartDataPoint> Series1 { get; set; }
+        public List<StepLineChartDataPoint> Series2 { get; set; }
     }
 }

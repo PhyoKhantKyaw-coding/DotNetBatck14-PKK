@@ -57,4 +57,18 @@ public class HighChartsController : Controller
         };
         return View(model);
     }
+
+    public IActionResult HeatmapChart()
+    {
+        var model = new HeatmapHighChartModel
+        {
+            Categories = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
+            Data = new double[][]
+            {
+                    new double[] { 0, 0, 10 }, new double[] { 0, 1, 19 }, new double[] { 0, 2, 8 },
+                    new double[] { 1, 0, 24 }, new double[] { 1, 1, 67 }, new double[] { 1, 2, 92 }
+            }
+        };
+        return View(model);
+    }
 }

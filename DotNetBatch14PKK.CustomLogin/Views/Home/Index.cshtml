@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<h2>Welcome to the Home Page</h2>
+
+<p>You are logged in as: @Context.Session.GetString("email")</p>
+
+<form asp-action="Logout" asp-controller="SignIn" method="post">
+    <button type="submit">Logout</button>
+</form>

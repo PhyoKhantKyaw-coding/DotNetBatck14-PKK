@@ -1,0 +1,57 @@
+﻿@model MultiSeriesStepLineChartModel
+@using Newtonsoft.Json
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script type="text/javascript">
+        window.onload = function () {
+            var series1 = @Html.Raw(JsonConvert.SerializeObject(Model.Series1.Select(dp => new { x = new Date(dp.X.Year, dp.X.Month - 1, dp.X.Day).getTime(), y = dp.Y })));
+            var series2 = @Html.Raw(JsonConvert.SerializeObject(Model.Series2.Select(dp => new { x = new Date(dp.X.Year, dp.X.Month - 1, dp.X.Day).getTime(), y = dp.Y })));
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "MultiSeries StepLine Chart"
+                },
+                axisY: {
+                    includeZero: false,
+                    labelFontColor: "#369EAD",
+                    lineColor: "#369EAD",
+                    lineThickness: 3
+                },
+                toolTip: {
+                    shared: true
+                },
+                axisY2: {
+                    includeZero: false,
+                    labelFontColor: "#C24642",
+                    lineColor: "#C24642",
+                    lineThickness: 3
+                },
+                axisX: {
+                    lineThickness: 3,
+                    valueFormatString: "MMM YYYY"
+                },
+                data: [
+                    {
+                        type: "stepLine",
+                        lineThickness: 3,
+                        dataPoints: series1
+                    },
+                    {
+                        type: "stepLine",
+                        axisYType: "secondary",
+                        lineThickness: 3,
+                        dataPoints: series2
+                    }
+                ]
+            });
+            chart.render();
+        }
+    </script>
+    <script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+</head>
+<body>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+</body>
+</html>

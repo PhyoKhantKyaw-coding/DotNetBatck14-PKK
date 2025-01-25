@@ -1,0 +1,59 @@
+﻿@model HeatmapHighChartModel
+@using Newtonsoft.Json;
+
+<div id="heatmapChartContainer" style="height: 400px; width: 100%;"></div>
+
+@section scripts {
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script>
+        Highcharts.chart('heatmapChartContainer', {
+            chart: {
+                type: 'heatmap',
+                marginTop: 40,
+                marginBottom: 80,
+                plotBorderWidth: 1
+            },
+            title: {
+                text: 'Sales per employee per weekday'
+            },
+            xAxis: {
+                categories: @Html.Raw(JsonConvert.SerializeObject(Model.Categories))
+            },
+            yAxis: {
+                categories: ['John', 'Doe', 'Jane'],
+                title: null
+            },
+            colorAxis: {
+                min: 0,
+                minColor: '#FFFFFF',
+                maxColor: Highcharts.getOptions().colors[0]
+            },
+            legend: {
+                align: 'right',
+                layout: 'vertical',
+                margin: 0,
+                verticalAlign: 'top',
+                y: 25,
+                symbolHeight: 280
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> sold <br><b>' +
+                        this.point.value + '</b> items on <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
+                }
+            },
+            series: [{
+                name: 'Sales per employee',
+                borderWidth: 1,
+                data: @Html.Raw(JsonConvert.SerializeObject(Model.Data)),
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000'
+                }
+            }]
+        });
+    </script>
+}

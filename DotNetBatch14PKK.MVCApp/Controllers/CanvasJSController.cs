@@ -58,4 +58,41 @@ public class CanvasJSController : Controller
         };
         return View(model);
     }
+
+    public IActionResult StepLineChart()
+    {
+        var model = new MultiSeriesStepLineChartModel
+        {
+            Series1 = new List<StepLineChartDataPoint>
+                {
+                    new StepLineChartDataPoint { X = new DateTime(2008, 2, 1), Y = 15.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 3, 1), Y = 14.50 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 4, 1), Y = 14.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 5, 1), Y = 14.50 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 6, 1), Y = 14.75 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 7, 1), Y = 16.30 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 8, 1), Y = 15.80 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 9, 1), Y = 17.50 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 10, 1), Y = 18.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 11, 1), Y = 18.50 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 12, 1), Y = 19.00 }
+                },
+            Series2 = new List<StepLineChartDataPoint>
+                {
+                    new StepLineChartDataPoint { X = new DateTime(2008, 2, 1), Y = 41.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 3, 1), Y = 42.50 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 4, 1), Y = 41.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 5, 1), Y = 45.30 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 6, 1), Y = 47.55 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 7, 1), Y = 45.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 8, 1), Y = 40.70 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 9, 1), Y = 37.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 10, 1), Y = 35.00 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 11, 1), Y = 34.50 },
+                    new StepLineChartDataPoint { X = new DateTime(2008, 12, 1), Y = 33.00 }
+                }
+        };
+
+        return View(model);
+    }
 }

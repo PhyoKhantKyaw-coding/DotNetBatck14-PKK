@@ -1,38 +1,44 @@
 using DotNetBatch14PKK.Login;
 using DotNetBatch14PKK.Login.Models;
 using DotNetBatch14PKK.Login.Service;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register AppDpContext with SQL Server or another database provider
+// Add DbContext with SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"))); // Replace with your actual connection string
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
-// Register LoginService
+// Register IDbConnection for Dapper (Scoped)
+builder.Services.AddScoped<IDbConnection>(sp =>
+    new SqlConnection(builder.Configuration.GetConnectionString("DbConnection")));
+
+// Register Application Services
 builder.Services.AddScoped<LoginService>();
 
-// Add services to the container.
+// Add Middleware Dependencies
+builder.Services.AddSingleton<IServiceScopeFactory>(sp => sp.GetRequiredService<IServiceScopeFactory>());
 
+// Add Controllers & API Services
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the middleware pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//app.UseMiddleware<AuthenticationMiddleware>();
+
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

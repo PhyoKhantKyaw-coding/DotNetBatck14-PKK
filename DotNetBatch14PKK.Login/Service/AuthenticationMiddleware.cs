@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using DotNetBatch14PKK.Login.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DotNetBatch14PKK.Login
@@ -11,28 +11,36 @@ namespace DotNetBatch14PKK.Login
     public class AuthenticationMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IDbConnection _dbConnection;
+        private readonly IServiceScopeFactory _scopeFactory;
+        private readonly string[] allowList = new string[] { "/api/login/login", "/api/login/register" };
 
-        public AuthenticationMiddleware(RequestDelegate next, IDbConnection dbConnection)
+        public AuthenticationMiddleware(RequestDelegate next, IServiceScopeFactory scopeFactory)
         {
             _next = next;
-            _dbConnection = dbConnection;
+            _scopeFactory = scopeFactory;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            // Get token from request headers
-            string? encryptedToken = context.Request.Headers["Authorization"];
+            string endpoint = context.Request.Path.ToString().ToLower();
+            if (allowList.Contains(endpoint))
+            {
+                await _next(context);
+                return;
+            }
 
+            string? encryptedToken = context.Request.Headers["Authorization"];
             if (string.IsNullOrEmpty(encryptedToken))
             {
                 await RespondWithUnauthorized(context, "Unauthorized: Token is missing.");
                 return;
             }
 
+            using var scope = _scopeFactory.CreateScope();
+            var dbConnection = scope.ServiceProvider.GetRequiredService<IDbConnection>();
+
             try
             {
-                // Decrypt token to get TokenModel object
                 string decryptedTokenJson = encryptedToken.ToDecrypt();
                 TokenModel? tokenModel = decryptedTokenJson.ToObject<TokenModel>();
 
@@ -42,9 +50,8 @@ namespace DotNetBatch14PKK.Login
                     return;
                 }
 
-                // Get user role from database using Dapper
-                string roleQuery = "SELECT RoleID, RoleName FROM Role WHERE RoleCode = @RoleCode";
-                var role = await _dbConnection.QueryFirstOrDefaultAsync<RoleModel>(roleQuery, new { RoleCode = tokenModel.UserRoleCode });
+                string roleQuery = "SELECT Id as RoleID, Name as RoleName FROM Roles WHERE Code = @RoleCode";
+                var role = await dbConnection.QueryFirstOrDefaultAsync<RoleModel>(roleQuery, new { RoleCode = tokenModel.UserRoleCode });
 
                 if (role == null)
                 {
@@ -52,34 +59,28 @@ namespace DotNetBatch14PKK.Login
                     return;
                 }
 
-                // Get permissions using Dapper
                 string permissionQuery = @"
-                    SELECT p.UserPermissionID, p.FeatureID
-                    FROM UserPermission up
-                    INNER JOIN UserPermission p ON up.FeatureID = p.UserPermissionID
-                    WHERE up.RoleID = @RoleID";
+                    SELECT P.Id as PermissionID, F.Id as FeatureID, F.Name as FeatureName, F.Endpoint
+                    FROM Permissions P
+                    INNER JOIN Features F ON P.FeatureID = F.Id
+                    WHERE P.RoleID = @RoleID AND F.Endpoint = @Endpoint";
 
-                var permissions = await _dbConnection.QueryAsync(permissionQuery, new { RoleID = role.RoleID });
+                var permission = await dbConnection.QueryFirstOrDefaultAsync<UserPermissionModel>(permissionQuery, new { RoleID = role.RoleID, Endpoint = endpoint });
 
-                // Create response model
-                var responseModel = new ResponseModel
+                if (permission == null)
                 {
-                    Success = true,
-                    Message = "User authenticated successfully",
-                    Data = new
-                    {
-                        UserId = tokenModel.UserId,
-                        UserName = tokenModel.UserName,
-                        Email = tokenModel.Email,
-                        Role = role.RoleName,
-                        Permissions = permissions
-                    }
+                    await RespondWithUnauthorized(context, "Unauthorized: Access denied.");
+                    return;
+                }
+
+                context.Items["User"] = new
+                {
+                    UserId = tokenModel.UserId,
+                    UserName = tokenModel.UserName,
+                    Email = tokenModel.Email,
+                    Role = role.RoleName,
+                    Permissions = permission
                 };
-
-                // Attach user details to the request for further processing
-                context.Items["User"] = responseModel;
-
-                // Continue to next middleware or endpoint
                 await _next(context);
             }
             catch (Exception ex)
@@ -91,34 +92,19 @@ namespace DotNetBatch14PKK.Login
         private async Task RespondWithUnauthorized(HttpContext context, string message)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            await context.Response.WriteAsJsonAsync(new ResponseModel
-            {
-                Success = false,
-                Message = message,
-                Data = null
-            });
+            await context.Response.WriteAsJsonAsync(new ResponseModel { Success = false, Message = message });
         }
 
         private async Task RespondWithForbidden(HttpContext context, string message)
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
-            await context.Response.WriteAsJsonAsync(new ResponseModel
-            {
-                Success = false,
-                Message = message,
-                Data = null
-            });
+            await context.Response.WriteAsJsonAsync(new ResponseModel { Success = false, Message = message });
         }
 
         private async Task RespondWithError(HttpContext context, string message)
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(new ResponseModel
-            {
-                Success = false,
-                Message = $"Internal Server Error: {message}",
-                Data = null
-            });
+            await context.Response.WriteAsJsonAsync(new ResponseModel { Success = false, Message = $"Internal Server Error: {message}" });
         }
     }
 }

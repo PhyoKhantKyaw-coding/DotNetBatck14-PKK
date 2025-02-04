@@ -1,7 +1,10 @@
 ﻿
 using DotNetBatch14PKK.Login.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace DotNetBatch14PKK.Login.Service;
 
@@ -103,6 +106,7 @@ public class LoginService
             Data = encryptedToken
         };
     }
+
 
 
 

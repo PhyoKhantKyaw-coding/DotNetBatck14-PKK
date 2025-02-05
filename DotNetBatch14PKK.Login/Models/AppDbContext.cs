@@ -11,7 +11,7 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<UserModel>()
             .Property(u => u.UserID)
-            .HasColumnType("uniqueidentifier"); // Ensure this matches the database column type
+            .HasColumnType("uniqueidentifier"); 
     }
 
     public DbSet<UserModel> Users { get; set; }

@@ -60,11 +60,9 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost("travel-packages")]
-    public async Task<IActionResult> CreateTravelPackage([FromForm] TravelPackageRequestModel model, IFormFile? photo)
     {
         try
         {
-            var response = await _travelService.CreateTravelPackage(model, photo);
             return response.Success == "true" ? Ok(response) : BadRequest(response);
         }
         catch (Exception ex)

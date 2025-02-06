@@ -7,8 +7,6 @@ namespace TravelAgency.Services;
 public class TravelService
 {
     private readonly AppDbContext _context;
-    private readonly IWebHostEnvironment _webHostEnvironment;
-    public TravelService(AppDbContext context, IWebHostEnvironment webHostEnvironment) 
     {
         _context = context;
         _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
@@ -140,27 +138,7 @@ public class TravelService
     {
         return await _context.TravelPackage.AsNoTracking().ToListAsync();
     }
-    public async Task<TravelPackageModel> GetPackagebyId(string id)
     {
-        var model = await _context.TravelPackage.AsNoTracking().FirstOrDefaultAsync(tp => tp.Id == id);
-        return model!;
-    }
-    public async Task<ResponseModel> CreateTravelPackage(TravelPackageRequestModel model, IFormFile? photo)
-    {
-        string? photoPath = null;
-
-        if (_webHostEnvironment.WebRootPath == null)
-        {
-            _webHostEnvironment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-        }
-
-        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-        Directory.CreateDirectory(uploadsFolder);
-        string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(photo.FileName);
-        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        {
             await photo.CopyToAsync(fileStream);
         }
 
@@ -177,15 +155,10 @@ public class TravelService
             Description = model.Description,
             Price = model.Price,
             Destination = model.Destination,
-            Status = "Inactive",
-            PhotoPath = photoPath
         };
 
         _context.TravelPackage.Add(tp);
         var result = await _context.SaveChangesAsync();
-        return result == 1
-            ? new ResponseModel { Success = "true", Message = "Travel package created successfully", Data = tp }
-            : new ResponseModel { Success = "false", Message = "Travel package creation failed", Data = null };
     }
     public async Task<ResponseModel> ActivateTravelPackage(String id)
     {

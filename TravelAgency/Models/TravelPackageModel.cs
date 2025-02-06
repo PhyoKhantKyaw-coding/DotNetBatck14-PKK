@@ -7,7 +7,7 @@ namespace TravelAgency.Models
     public class TravelPackageModel
     {
         [Key]
-
+        public string Id { get; set; } = null!;
         public string Title { get; set; } = null!;
 
         public string Destination { get; set; } = null!;

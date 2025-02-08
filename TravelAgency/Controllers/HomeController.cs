@@ -77,6 +77,7 @@ namespace TravelAgency.Controllers
 
             return Ok(response);
         }
+
         [HttpGet("User-id")]
         public async Task<IActionResult> GetUserId(string id)
         {

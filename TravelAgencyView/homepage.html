@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="homepage.css">
+</head>
+<body>
+    <header>
+        <h2>Travel Agency</h2>
+        <div class="search-container">
+            <input type="text" class="form-control" placeholder="Search...">
+            <button class="btn btn-light"><i class="bi bi-search"></i></button>
+            <button class="btn btn-warning">Bookings</button>
+            <div class="profile-icon" id="profile-icon-btn">
+                <i class="bi bi-person"></i>
+                <div id="profile-view" class="profile-view">
+                    <!-- Profile Message (shows when user is not logged in) -->
+                    <div id="profile-message">
+                        <p>Please log in to view your profile.</p>
+                    </div>
+                    <!-- Profile Data (shows when user is logged in) -->
+                    <div id="profile-data" style="display: none;">
+                        <p><strong>Name:</strong> <span id="profile-name"></span></p>
+                        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                        <p><strong>Phone:</strong> <span id="profile-phone"></span></p>
+                        <button class="btn btn-danger" id="logout-btn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container mt-4" id="travel-packages">
+        <div class="row">
+            <!-- Travel packages will be displayed here -->
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 Travel Agency. All rights reserved.
+    </footer>
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="auth-modal">
+        <span class="close-btn" id="close-modal">&times;</span> <!-- Close button -->
+        <h2 id="form-title">Login</h2>
+        <form id="auth-form">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group" id="name-field" style="display: none;">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group" id="phone-field" style="display: none;">
+                <label for="name">Phone number:</label>
+                <input type="text" id="phone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <div class="forgot-password">
+                <a href="#">Forgot Password?</a>
+            </div>
+            <button id="submit-btn">Sign In</button>
+            <span class="switch-btn" id="toggle-form">Don't have an account? Register here</span>
+        </form>
+    </div>
+    <!-- Travel Package Details Modal -->
+    <div class="modal fade" id="packageModal" tabindex="-1" aria-labelledby="packageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 750px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="packageModalLabel">Package Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex">
+                        <!-- Image Section -->
+                        <div class="flex-shrink-0 me-4">
+                            <img id="modalImage" src="" class="img-fluid mb-2" alt="Package Image">
+                        </div>
+                        <!-- Details Section -->
+                        <div class="flex-grow-1">
+                            <h4 id="modalTitle"></h4>
+                            <p id="modalDescription"></p>
+                            <p><strong>Price:</strong> $<span id="modalPrice"></span></p>
+                            <p><strong>Start Date:</strong> <span id="modalStartDate"></span></p>
+                            <p><strong>End Date:</strong> <span id="modalEndDate"></span></p>
+                            <p><strong>Inclusions:</strong> <span id="modalInclusions"></span></p>
+                            <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                            <p><strong>Cancellation Policy:</strong> <span id="modalCancel"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="bookNowButton" data-package-id="">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Booking Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label for="travelerName">Traveler Name:</label>
+                            <input type="text" id="travelerName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="travelerAge">Age:</label>
+                            <input type="number" id="travelerAge" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="travelerGender">Gender:</label>
+                            <select id="travelerGender" class="form-control" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label>Travelers:</label>
+                            <div id="travelerList" class="mb-3">
+                                <!-- Traveler list will be shown here -->
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success" id="addTravelerBtn">Add Traveler</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="proceedToPayment">Proceed to Payment</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Payment Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number:</label>
+                            <input type="text" id="cardNumber" class="form-control" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmPayment">Confirm Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="homepage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

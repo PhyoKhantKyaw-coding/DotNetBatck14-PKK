@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="homepage.css">
+</head>
+<body>
+    <header>
+        <h2>Travel Agency</h2>
+        <div class="search-container">
+            <input type="text" class="form-control" placeholder="Search...">
+            <button class="btn btn-light"><i class="bi bi-search"></i></button>
+            <button class="btn btn-warning">Bookings</button>
+            <div class="profile-icon" id="profile-icon-btn">
+                <i class="bi bi-person"></i>
+                <div id="profile-view" class="profile-view">
+                    <!-- Profile Message (shows when user is not logged in) -->
+                    <div id="profile-message">
+                        <p>Please log in to view your profile.</p>
+                    </div>
+                    <!-- Profile Data (shows when user is logged in) -->
+                    <div id="profile-data" style="display: none;">
+                        <p><strong>Name:</strong> <span id="profile-name"></span></p>
+                        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                        <p><strong>Phone:</strong> <span id="profile-phone"></span></p>
+                        <button class="btn btn-danger" id="logout-btn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container mt-4" id="travel-packages">
+        <div class="row">
+            <!-- admin data will be displayed here -->
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 Travel Agency. All rights reserved.
+    </footer>
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="auth-modal">
+        <span class="close-btn" id="close-modal">&times;</span> <!-- Close button -->
+        <h2 id="form-title">Login</h2>
+        <form id="auth-form">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group" id="name-field" style="display: none;">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group" id="phone-field" style="display: none;">
+                <label for="name">Phone number:</label>
+                <input type="text" id="phone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <div class="forgot-password">
+                <a href="#">Forgot Password?</a>
+            </div>
+            <button id="submit-btn">Sign In</button>
+            <span class="switch-btn" id="toggle-form">Don't have an account? Register here</span>
+        </form>
+    </div>
+
+    <script src="homepage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
